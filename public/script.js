@@ -69,3 +69,8 @@ onValue(rootRef, (snapshot) => {
     
     console.log("🔥 Root Database Data:", data);
 });
+
+// Auto refresh the page every 30 minutes (30 * 60 * 1000 milliseconds)
+setTimeout(() => {
+    window.location.reload();
+}, 30 * 60 * 1000);
