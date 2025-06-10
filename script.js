@@ -22,7 +22,50 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
 const rootRef = ref(database, '/');
+
 onValue(rootRef, (snapshot) => {
     const data = snapshot.val();
-    console.log("🔥 Root Database Data:", JSON.stringify(data));
+    console.log(data['overview']);
+    var overview_value = data['overview'];
+    const overviewHTML = window.document.getElementById('overview_value')
+    overviewHTML.textContent = overview_value
+
+    var active_users = data['active_users'];
+    const activeHTML = window.document.getElementById('active_user_value')
+    activeHTML.textContent = active_users;
+
+    var today_sale = data['today_sale'];
+    const todayHTML = window.document.getElementById('today_sale')
+    todayHTML.textContent = today_sale;
+
+    const sales = data['sales'];
+    const teamSection = document.getElementById('team-section');
+    const totalRow = document.getElementById('total-row');
+    
+    // Clear existing team member rows but keep total row structure
+    const existingRows = teamSection.querySelectorAll('tr:not(#total-row)');
+    existingRows.forEach(row => row.remove());
+    
+    let totalTarget = 0;
+    let totalAchievement = 0;
+    
+    sales.forEach(sale => {
+        if (sale) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="number-font">${sale.tl.toUpperCase()}</td>
+                <td class="number-font">${sale.target.toLocaleString()}</td>
+                <td class="number-font">${sale.achievement.toLocaleString()}</td>
+            `;
+            teamSection.insertBefore(row, totalRow);
+            
+            totalTarget += sale.target;
+            totalAchievement += sale.achievement;
+        }
+    });
+    
+    document.getElementById('total-target').textContent = totalTarget.toLocaleString();
+    document.getElementById('total-achievement').textContent = totalAchievement.toLocaleString();
+    
+    console.log("🔥 Root Database Data:", data);
 });
