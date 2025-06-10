@@ -28,7 +28,7 @@ onValue(rootRef, (snapshot) => {
     console.log(data['overview']);
     var overview_value = data['overview'];
     const overviewHTML = window.document.getElementById('overview_value')
-    overviewHTML.textContent = overview_value
+    overviewHTML.textContent = `₹${overview_value.toLocaleString()}`
 
     var active_users = data['active_users'];
     const activeHTML = window.document.getElementById('active_user_value')
@@ -36,7 +36,7 @@ onValue(rootRef, (snapshot) => {
 
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
-    todayHTML.textContent = today_sale;
+    todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
 
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
@@ -53,9 +53,9 @@ onValue(rootRef, (snapshot) => {
         if (sale) {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="number-font">${sale.tl.toUpperCase()}</td>
-                <td class="number-font">${sale.target.toLocaleString()}</td>
-                <td class="number-font">${sale.achievement.toLocaleString()}</td>
+                <td class="name-font">${sale.tl.toUpperCase()}</td>
+                <td class="number-font">₹${sale.target.toLocaleString()}</td>
+                <td class="number-font">₹${sale.achievement.toLocaleString()}</td>
             `;
             teamSection.insertBefore(row, totalRow);
             
@@ -64,8 +64,8 @@ onValue(rootRef, (snapshot) => {
         }
     });
     
-    document.getElementById('total-target').textContent = totalTarget.toLocaleString();
-    document.getElementById('total-achievement').textContent = totalAchievement.toLocaleString();
+    document.getElementById('total-target').textContent = `₹${totalTarget.toLocaleString()}`;
+    document.getElementById('total-achievement').textContent = `₹${totalAchievement.toLocaleString()}`;
     
     console.log("🔥 Root Database Data:", data);
 });

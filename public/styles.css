@@ -56,6 +56,12 @@ table {
 
 .number-font {
     font-size: 40px;
+    font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
+}
+
+.name-font {
+    font-size: 40px;
+    font-family: Arial, sans-serif;
 }
 
 .logo-container {
@@ -76,6 +82,7 @@ table {
     color: white;
     margin-top: 70px;
     margin-bottom: 60px;
+    font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
 }
 
 th,
