@@ -4,18 +4,18 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase
 
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
 
-// Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBgw42QxAVC96nXyKMeEPRSGub1YeZziiY",
-    authDomain: "hisaab-tv.firebaseapp.com",
-    databaseURL: "https://hisaab-tv-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hisaab-tv",
-    storageBucket: "hisaab-tv.firebasestorage.app",
-    messagingSenderId: "1009690346881",
-    appId: "1:1009690346881:web:dc5199311162232beb1480",
-    measurementId: "G-Q85TWW2SNM"
+  apiKey: "AIzaSyAg0PrvpdddksATTd0e8rc3q8yz2U1ranM",
+  authDomain: "myhisaab-tv.firebaseapp.com",
+  databaseURL: "https://myhisaab-tv-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "myhisaab-tv",
+  storageBucket: "myhisaab-tv.firebasestorage.app",
+  messagingSenderId: "689042873400",
+  appId: "1:689042873400:web:80e2e01a94c5a589a01acd",
+  measurementId: "G-FNMY483S6S"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
