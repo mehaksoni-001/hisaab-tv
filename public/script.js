@@ -26,18 +26,28 @@ const rootRef = ref(database, '/');
 onValue(rootRef, (snapshot) => {
     const data = snapshot.val();
     console.log(data['overview']);
-    var overview_value = data['overview'];
-    const overviewHTML = window.document.getElementById('overview_value')
-    overviewHTML.textContent = `${overview_value.toLocaleString()}`
+    //var overview_value = data['overview'];
+   // const overviewHTML = window.document.getElementById('overview_value')
+   // overviewHTML.textContent = `${overview_value.toLocaleString()}`
 
-    var active_users = data['active_users'];
-    const activeHTML = window.document.getElementById('active_user_value')
-    activeHTML.textContent = active_users;
-
+   // var active_users = data['active_users'];
+   // const activeHTML = window.document.getElementById('active_user_value')
+   // activeHTML.textContent = active_users;
+     
+   // window.onload = function () {
+      //  document.getElementById('overview')?.remove();
+      //  document.getElementById('active-users')?.remove();
+     // };
+      
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
     todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
-     
+
+      //window.onload = function(){
+       // const overviewHTML = window.document.getElementById('overview_value')
+       // const activeHTML = window.document.getElementById('active_user_value')
+       // if (overview_value)
+  //  }
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
     const totalRow = document.getElementById('total-row');
