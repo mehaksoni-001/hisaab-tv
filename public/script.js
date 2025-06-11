@@ -190,7 +190,6 @@ onValue(rootRef, (snapshot) => {
     }
     todayHTML.textContent = newValue;
 
-
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
     const totalRow = document.getElementById('total-row');
