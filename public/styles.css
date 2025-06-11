@@ -5,17 +5,25 @@
 }
 
 .main-table {
-    height: 80px;
+    height: auto;
     /* margin-bottom: 80px;*/
     flex: top;
+    padding: 0;
+   margin: 0;
+   margin-top: 10px;
     /*padding-bottom: 60px;*/
 
+}
+.second-line, .number-font{
+    font-size:22px;
+    padding:5px;
 }
 
 html,
 body {
-    height: 100%;
-    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
     background-color: black;
     font-family: Arial, sans-serif;
     color: white;
@@ -27,11 +35,50 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: ß;
-    width: 100w;
-    padding: 0;
+    height:cal(90vh-80px);
+    width: 100wh;
+    overflow-y: hidden;
+    border-collapse: collapse;
+    padding-bottom: 10px;
 }
-
+.logo{
+    font-size: 40px;
+    font-weight: bold;
+    color:white;
+    margin-top: 10px;
+}
+ .logo.dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #f7b510;
+    border-radius:50%;
+    margin-left: 50%;
+    margin-top: 20px;
+    vertical-align: middle;
+}
+.news{
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+    background-color:white;
+    color:black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 30px;
+    display:flex;
+    z-index:1000;
+    padding:5px 0;
+}
+.news-text{
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollTicker 15s linear infinite;
+    font-size: 20px;
+    height: 40px;
+    
+}
 h2 {
     margin-bottom: 10px;
     font-size: 26px;
@@ -42,7 +89,7 @@ h2 {
 
 table {
     width: 100%;
-    height: 100%;
+    height: 90%;
     border-collapse: collapse;
     table-layout: fixed;
     text-align: center;
@@ -57,16 +104,27 @@ table {
 .number-font {
     font-size: 40px;
     font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
+    font-weight: bold;
 }
 
 .name-font {
-    font-size: 40px;
+    font-size: 60px;
     font-family: Arial, sans-serif;
+}
+.second-section td,
+.second-section th{
+   border:1px;
+   padding:50px;
+   text-align:center;
 }
 
 .logo-container {
-    height: 70px;
-    align-items: center;
+   
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top:10px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .hisaab {
@@ -75,14 +133,20 @@ table {
     justify-content: center;
     margin-left: 40%;
     margin-right: 40%;
+    margin-bottom: 5px;
 }
 
 .number {
     font-size: 60px;
     color: white;
+    font-weight: bold;
     margin-top: 70px;
     margin-bottom: 60px;
     font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
+}
+.number-fontT{
+    font-weight: bold;
+    font-size: 40px;
 }
 
 th,
@@ -97,12 +161,26 @@ td {
 th {
     background-color: #222;
 }
+audio{
+    display: none;
+}
 
 .dot {
     color: #f7b510;
-
+    margin-top: 20px;
 }
+
 
 td {
     background-color: #111;
+}
+@keyframes srcollTicker{
+    0%{ transform: translateX(0%);}
+    100%{ transform: translateX(-100%);}
+}
+.new-linelogo{
+    background-color: white;
+    color: #111;
+    height: 40px;
+    font-size: 30px;
 }
