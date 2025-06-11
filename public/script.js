@@ -23,6 +23,14 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app);
 const rootRef = ref(database, '/');
 
+// Track if user has interacted with the page
+let userHasInteracted = false;
+
+// Set up user interaction listener
+document.addEventListener('click', () => {
+    userHasInteracted = true;
+}, { once: true });
+
 onValue(rootRef, (snapshot) => {
     const data = snapshot.val();
     console.log(data['overview']);
@@ -36,7 +44,31 @@ onValue(rootRef, (snapshot) => {
 
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
-    todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
+
+    // Store the previous value
+    const previousValue = todayHTML.textContent;
+    const newValue = `₹${today_sale.toLocaleString()}`;
+
+    // Play sound if value changed (and not on initial load when previous value is empty or '-')
+    if(previousValue && previousValue !== '-' && previousValue !== newValue && userHasInteracted){
+        // Calculate the difference to announce
+        const previousAmount = parseInt(previousValue.replace(/[₹,]/g, '')) || 0;
+        const newAmount = parseInt(newValue.replace(/[₹,]/g, '')) || 0;
+        const difference = newAmount - previousAmount;
+        
+        if(difference > 0) {
+            // Use text-to-speech to announce the payment
+            const utterance = new SpeechSynthesisUtterance(`We have received ${difference} rupees`);
+            utterance.lang = 'en-US';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    todayHTML.textContent = newValue;
+
 
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
@@ -74,10 +106,11 @@ onValue(rootRef, (snapshot) => {
 setTimeout(() => {
     window.location.reload();
 }, 30 * 60 * 1000);
+
 function playPaymentSound(){
     const sound = document.getElementById("payment_sound");
     sound.play().catch(errror => {
-        console.log("Audio play failed:", error);
+        console.log("Audio play failed:", errror);
 
     })
 }
