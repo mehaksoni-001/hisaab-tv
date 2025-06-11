@@ -37,7 +37,7 @@ onValue(rootRef, (snapshot) => {
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
     todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
-
+     
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
     const totalRow = document.getElementById('total-row');
