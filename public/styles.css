@@ -8,7 +8,7 @@
     height: auto;
     /* margin-bottom: 80px;*/
     flex: top;
-    padding: 0;
+    padding-top: 30px;
    margin: 0;
    margin-top: 10px;
     /*padding-bottom: 60px;*/
@@ -99,6 +99,7 @@ table {
     background-color: #f7b510;
     color: #111;
     width: 20px;
+    font-size: 35px;
 }
 
 .number-font {
