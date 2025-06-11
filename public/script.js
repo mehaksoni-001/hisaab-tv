@@ -23,6 +23,105 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app);
 const rootRef = ref(database, '/');
 
+// Track if user has interacted with the page
+let userHasInteracted = false;
+
+// Set up multiple interaction listeners for better autoplay support
+const enableAudio = () => {
+    userHasInteracted = true;
+    // Try to play a silent sound to enable audio context
+    const utterance = new SpeechSynthesisUtterance('');
+    utterance.volume = 0;
+    window.speechSynthesis.speak(utterance);
+};
+
+// Listen for any user interaction
+document.addEventListener('click', enableAudio, { once: true });
+document.addEventListener('touchstart', enableAudio, { once: true });
+document.addEventListener('keydown', enableAudio, { once: true });
+document.addEventListener('mousemove', enableAudio, { once: true });
+
+// Also try to enable audio on visibility change (when tab becomes active)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !userHasInteracted) {
+        enableAudio();
+    }
+});
+
+// Confetti animation class
+class Confetti {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.colors = ['#f7b510', '#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57', '#ff9ff3'];
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    createParticle(x, y) {
+        return {
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10 - 5,
+            size: Math.random() * 8 + 5,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            angle: Math.random() * 360,
+            angularVelocity: (Math.random() - 0.5) * 10,
+            life: 1
+        };
+    }
+
+    explode() {
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height / 2;
+        
+        for (let i = 0; i < 150; i++) {
+            this.particles.push(this.createParticle(centerX, centerY));
+        }
+        
+        this.animate();
+    }
+
+    animate() {
+        const animationFrame = () => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            this.particles = this.particles.filter(particle => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.vy += 0.3; // gravity
+                particle.angle += particle.angularVelocity;
+                particle.life -= 0.01;
+                particle.size *= 0.98;
+                
+                if (particle.life > 0) {
+                    this.ctx.save();
+                    this.ctx.translate(particle.x, particle.y);
+                    this.ctx.rotate(particle.angle * Math.PI / 180);
+                    this.ctx.globalAlpha = particle.life;
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+                    this.ctx.restore();
+                    return true;
+                }
+                return false;
+            });
+            
+            if (this.particles.length > 0) {
+                requestAnimationFrame(animationFrame);
+            }
+        };
+        
+        animationFrame();
+    }
+}
+
+// Initialize confetti
+const confettiCanvas = document.getElementById('confetti-canvas');
+const confetti = new Confetti(confettiCanvas);
+
 onValue(rootRef, (snapshot) => {
     const data = snapshot.val();
     console.log(data['overview']);
@@ -36,8 +135,61 @@ onValue(rootRef, (snapshot) => {
 
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
-    todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
-     
+
+    // Store the previous value
+    const previousValue = todayHTML.textContent;
+    const newValue = `₹${today_sale.toLocaleString()}`;
+
+    // Play sound if value changed (and not on initial load when previous value is empty or '-')
+    if(previousValue && previousValue !== '-' && previousValue !== newValue){
+        // Calculate the difference to announce
+        const previousAmount = parseInt(previousValue.replace(/[₹,]/g, '')) || 0;
+        const newAmount = parseInt(newValue.replace(/[₹,]/g, '')) || 0;
+        const difference = newAmount - previousAmount;
+        
+        if(difference > 0) {
+            // Show confetti
+            confetti.explode();
+            
+            // Show full screen amount
+            const fullscreenElement = document.getElementById('fullscreen-amount');
+            const amountTextElement = fullscreenElement.querySelector('.amount-text');
+            amountTextElement.textContent = `+₹${difference.toLocaleString()}`;
+            fullscreenElement.classList.add('show');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                fullscreenElement.classList.remove('show');
+            }, 3000);
+            
+            // Use text-to-speech to announce the payment
+            if (userHasInteracted) {
+                const utterance = new SpeechSynthesisUtterance(`We have received ${difference} rupees`);
+                utterance.lang = 'en-US';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                // If user hasn't interacted yet, still try to speak (might work in some contexts)
+                try {
+                    const utterance = new SpeechSynthesisUtterance(`We have received ${difference} rupees`);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 1.0;
+                    utterance.pitch = 1.0;
+                    utterance.volume = 1.0;
+                    
+                    window.speechSynthesis.speak(utterance);
+                    userHasInteracted = true; // If it worked, mark as interacted
+                } catch (error) {
+                    console.log("Audio requires user interaction. Move mouse or click anywhere to enable sound.");
+                }
+            }
+        }
+    }
+    todayHTML.textContent = newValue;
+
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
     const totalRow = document.getElementById('total-row');
@@ -71,13 +223,14 @@ onValue(rootRef, (snapshot) => {
 });
  
 // Auto refresh the page every 30 minutes (30 * 60 * 1000 milliseconds)
-setTimeout(() => {
-    window.location.reload();
-}, 30 * 60 * 1000);
+// setTimeout(() => {
+//     window.location.reload();
+// }, 30 * 60 * 1000);
+
 function playPaymentSound(){
     const sound = document.getElementById("payment_sound");
     sound.play().catch(errror => {
-        console.log("Audio play failed:", error);
+        console.log("Audio play failed:", errror);
 
     })
 }

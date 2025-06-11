@@ -185,3 +185,54 @@ td {
     height: 40px;
     font-size: 30px;
 }
+
+/* Full screen amount display */
+.fullscreen-amount {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+.fullscreen-amount.show {
+    display: flex;
+}
+
+.amount-text {
+    font-size: 150px;
+    color: #f7b510;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes scaleIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+}
