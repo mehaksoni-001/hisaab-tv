@@ -6,12 +6,13 @@
 
 .main-table {
     height: auto;
-    /* margin-bottom: 80px;*/
+ 
     flex: top;
     padding-top: 30px;
+    padding-bottom: 0;
    margin: 0;
    margin-top: 10px;
-    /*padding-bottom: 60px;*/
+  
 
 }
 .second-line, .number-font{
@@ -115,7 +116,7 @@ table {
 .second-section td,
 .second-section th{
    border:1px;
-   padding:50px;
+   padding:20px;
    text-align:center;
 }
 
