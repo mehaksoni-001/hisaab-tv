@@ -28,7 +28,7 @@ onValue(rootRef, (snapshot) => {
     console.log(data['overview']);
     var overview_value = data['overview'];
     const overviewHTML = window.document.getElementById('overview_value')
-    overviewHTML.textContent = `₹${overview_value.toLocaleString()}`
+    overviewHTML.textContent = `${overview_value.toLocaleString()}`
 
     var active_users = data['active_users'];
     const activeHTML = window.document.getElementById('active_user_value')
@@ -69,8 +69,22 @@ onValue(rootRef, (snapshot) => {
     
     console.log("🔥 Root Database Data:", data);
 });
-
+ 
 // Auto refresh the page every 30 minutes (30 * 60 * 1000 milliseconds)
 setTimeout(() => {
     window.location.reload();
 }, 30 * 60 * 1000);
+function playPaymentSound(){
+    const sound = document.getElementById("payment_sound");
+    sound.play().catch(errror => {
+        console.log("Audio play failed:", error);
+
+    })
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+    document.body.addEventListener("click",function (){
+        playPaymentSound();
+    },{ once:true});
+
+});
