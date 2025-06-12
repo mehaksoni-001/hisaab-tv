@@ -22,9 +22,9 @@
 
 .number{
     font-size: 900px;
-    padding-bottom: 20px;
+   
     width: 100%;
-    margin-bottom: 0;
+   
     align-items: center;
     justify-content: center;
     justify-items: center;
@@ -38,7 +38,7 @@
 .today{
     padding-top: 5px;
   font-size:40px;
-  padding-left: 40%;
+  
   width: 100vw;
   justify-content: center;
   justify-items: center;
