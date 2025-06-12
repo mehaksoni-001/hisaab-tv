@@ -21,7 +21,7 @@
 
 .sale{
     padding-right: 19%;
-   height: 19px;
+   height: 15px;
 }
 .number{
     font-size: 600px;
@@ -35,18 +35,18 @@
 }
 
 #today_sale {
-    font-size: 150px;
+    font-size: 210px;
 }
 
 .today{
     padding-top: 5px;
-  font-size:40px;
+    font-size: 40px;
   
   width: 100vw;
   justify-content: center;
   justify-items: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 120px;
  
 }
 
