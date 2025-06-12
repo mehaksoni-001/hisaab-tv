@@ -11,30 +11,25 @@
     padding:5px;
 }
 
-.today{
-    width: 300px;
-    height: 250px;
-    font-size: 80px;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-left: 300px;
-   justify-items: center;
-}
+
 .number{
-    font-size: 700px;
-    width: 100rem;
-    margin-bottom: 0;
-    
-    /*padding-right: 500px;*/
+    font-size: 900px;
+    width: 130rem;
+  
+    align-items: center;
+  
     margin-top: 5px;
      justify-content: center;
     justify-items: center;
 }
 .today{
-    padding-top: 20px;
+  padding-top: 20px;
   font-size:40px;
-  padding-left: 500px;
- width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  
+ 
 }
 
 html,
