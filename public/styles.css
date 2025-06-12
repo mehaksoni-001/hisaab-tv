@@ -20,17 +20,18 @@
 }
 
 .sale{
-    padding-right: 20%;
+    padding-right: 19%;
+   height: 19px;
 }
 .number{
-    font-size: 900px;
-   
-    width: 100%;
-   
+    font-size: 600px;
+
+    width: 80%;
+  
     align-items: center;
     justify-content: center;
     justify-items: center;
-    width: 100vw;
+   /* width: 100vw;*/
 }
 
 #today_sale {
