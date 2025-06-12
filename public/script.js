@@ -125,71 +125,23 @@ const confetti = new Confetti(confettiCanvas);
 onValue(rootRef, (snapshot) => {
     const data = snapshot.val();
     console.log(data['overview']);
-    var overview_value = data['overview'];
-    const overviewHTML = window.document.getElementById('overview_value')
-    overviewHTML.textContent = `${overview_value.toLocaleString()}`
+    //var overview_value = data['overview'];
+   // const overviewHTML = window.document.getElementById('overview_value')
+   // overviewHTML.textContent = `${overview_value.toLocaleString()}`
 
-    var active_users = data['active_users'];
-    const activeHTML = window.document.getElementById('active_user_value')
-    activeHTML.textContent = active_users;
-
+   // var active_users = data['active_users'];
+   // const activeHTML = window.document.getElementById('active_user_value')
+   // activeHTML.textContent = active_users;
+     
+   // window.onload = function () {
+      //  document.getElementById('overview')?.remove();
+      //  document.getElementById('active-users')?.remove();
+     // };
+      
     var today_sale = data['today_sale'];
     const todayHTML = window.document.getElementById('today_sale')
-
-    // Store the previous value
-    const previousValue = todayHTML.textContent;
-    const newValue = `₹${today_sale.toLocaleString()}`;
-
-    // Play sound if value changed (and not on initial load when previous value is empty or '-')
-    if(previousValue && previousValue !== '-' && previousValue !== newValue){
-        // Calculate the difference to announce
-        const previousAmount = parseInt(previousValue.replace(/[₹,]/g, '')) || 0;
-        const newAmount = parseInt(newValue.replace(/[₹,]/g, '')) || 0;
-        const difference = newAmount - previousAmount;
-        
-        if(difference > 0) {
-            // Show confetti
-            confetti.explode();
-            
-            // Show full screen amount
-            const fullscreenElement = document.getElementById('fullscreen-amount');
-            const amountTextElement = fullscreenElement.querySelector('.amount-text');
-            amountTextElement.textContent = `+₹${difference.toLocaleString()}`;
-            fullscreenElement.classList.add('show');
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                fullscreenElement.classList.remove('show');
-            }, 3000);
-            
-            // Use text-to-speech to announce the payment
-            if (userHasInteracted) {
-                const utterance = new SpeechSynthesisUtterance(`We have received ${difference} rupees`);
-                utterance.lang = 'en-US';
-                utterance.rate = 1.0;
-                utterance.pitch = 1.0;
-                utterance.volume = 1.0;
-                
-                window.speechSynthesis.speak(utterance);
-            } else {
-                // If user hasn't interacted yet, still try to speak (might work in some contexts)
-                try {
-                    const utterance = new SpeechSynthesisUtterance(`We have received ${difference} rupees`);
-                    utterance.lang = 'en-US';
-                    utterance.rate = 1.0;
-                    utterance.pitch = 1.0;
-                    utterance.volume = 1.0;
-                    
-                    window.speechSynthesis.speak(utterance);
-                    userHasInteracted = true; // If it worked, mark as interacted
-                } catch (error) {
-                    console.log("Audio requires user interaction. Move mouse or click anywhere to enable sound.");
-                }
-            }
-        }
-    }
-    todayHTML.textContent = newValue;
-
+    todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
+     
     const sales = data['sales'];
     const teamSection = document.getElementById('team-section');
     const totalRow = document.getElementById('total-row');
