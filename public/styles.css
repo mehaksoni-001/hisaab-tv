@@ -15,11 +15,13 @@
     width: 300px;
     height: 250px;
     font-size: 80px;
-   
     padding-left: 300px;
    justify-items: center;
 }
 
+.sale{
+    padding-left: 18%;
+}
 .number{
     font-size: 900px;
    
@@ -29,6 +31,7 @@
     justify-content: center;
     justify-items: center;
     width: 100vw;
+    padding-bottom: 20px;
 }
 
 #today_sale {
