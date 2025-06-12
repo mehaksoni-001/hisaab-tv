@@ -11,24 +11,39 @@
     padding:5px;
 }
 
+.today{
+    width: 300px;
+    height: 250px;
+    font-size: 80px;
+   
+    padding-left: 300px;
+   justify-items: center;
+}
 
 .number{
     font-size: 900px;
-    width: 130rem;
-  
+    padding-bottom: 20px;
+    width: 100%;
+    margin-bottom: 0;
     align-items: center;
-  
-    margin-top: 5px;
-     justify-content: center;
+    justify-content: center;
     justify-items: center;
+    width: 100vw;
 }
+
+#today_sale {
+    font-size: 150px;
+}
+
 .today{
-  padding-top: 20px;
+    padding-top: 5px;
   font-size:40px;
-  display: flex;
+  padding-left: 40%;
+  width: 100vw;
   justify-content: center;
   justify-items: center;
-  
+  align-items: center;
+  margin-bottom: 10px;
  
 }
 
@@ -238,7 +253,7 @@ td {
 
 /* Full screen amount display */
 .fullscreen-amount {
-    position: fixed;
+   /* position: fixed;*/
     top: 0;
     left: 0;
     width: 100%;
