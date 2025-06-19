@@ -1,195 +1,166 @@
-// Import the functions you need from the SDKs you need
+// Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js";
-
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAg0PrvpdddksATTd0e8rc3q8yz2U1ranM",
   authDomain: "myhisaab-tv.firebaseapp.com",
   databaseURL: "https://myhisaab-tv-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "myhisaab-tv",
-  storageBucket: "myhisaab-tv.firebasestorage.app",
+  storageBucket: "myhisaab-tv.appspot.com",
   messagingSenderId: "689042873400",
   appId: "1:689042873400:web:80e2e01a94c5a589a01acd",
   measurementId: "G-FNMY483S6S"
 };
 
-
-// Initialize Firebase
+// Init Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const database = getDatabase(app);
-const rootRef = ref(database, '/');
+const db = getDatabase(app);
 
-// Track if user has interacted with the page
-let userHasInteracted = false;
-
-// Set up multiple interaction listeners for better autoplay support
-const enableAudio = () => {
-    userHasInteracted = true;
-    // Try to play a silent sound to enable audio context
-    const utterance = new SpeechSynthesisUtterance('');
-    utterance.volume = 0;
-    window.speechSynthesis.speak(utterance);
-};
-
-// Listen for any user interaction
-document.addEventListener('click', enableAudio, { once: true });
-document.addEventListener('touchstart', enableAudio, { once: true });
-document.addEventListener('keydown', enableAudio, { once: true });
-document.addEventListener('mousemove', enableAudio, { once: true });
-
-// Also try to enable audio on visibility change (when tab becomes active)
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && !userHasInteracted) {
-        enableAudio();
-    }
-});
-
-// Confetti animation class
+// Confetti class
 class Confetti {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.particles = [];
-        this.colors = ['#f7b510', '#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57', '#ff9ff3'];
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.colors = ['#f7b510', '#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57', '#ff9ff3'];
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
 
-    createParticle(x, y) {
-        return {
-            x: x,
-            y: y,
-            vx: (Math.random() - 0.5) * 10,
-            vy: (Math.random() - 0.5) * 10 - 5,
-            size: Math.random() * 8 + 5,
-            color: this.colors[Math.floor(Math.random() * this.colors.length)],
-            angle: Math.random() * 360,
-            angularVelocity: (Math.random() - 0.5) * 10,
-            life: 1
-        };
-    }
+  createParticle(x, y) {
+    return {
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 10,
+      vy: (Math.random() - 0.5) * 10 - 5,
+      size: Math.random() * 8 + 5,
+      color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      angle: Math.random() * 360,
+      angularVelocity: (Math.random() - 0.5) * 10,
+      life: 1
+    };
+  }
 
-    explode() {
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
-        
-        for (let i = 0; i < 150; i++) {
-            this.particles.push(this.createParticle(centerX, centerY));
+  explode() {
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    for (let i = 0; i < 150; i++) {
+      this.particles.push(this.createParticle(centerX, centerY));
+    }
+    this.animate();
+  }
+
+  animate() {
+    const animationFrame = () => {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.particles = this.particles.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.3;
+        p.angle += p.angularVelocity;
+        p.life -= 0.01;
+        p.size *= 0.98;
+        if (p.life > 0) {
+          this.ctx.save();
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate(p.angle * Math.PI / 180);
+          this.ctx.globalAlpha = p.life;
+          this.ctx.fillStyle = p.color;
+          this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          this.ctx.restore();
+          return true;
         }
-        
-        this.animate();
-    }
-
-    animate() {
-        const animationFrame = () => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            this.particles = this.particles.filter(particle => {
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-                particle.vy += 0.3; // gravity
-                particle.angle += particle.angularVelocity;
-                particle.life -= 0.01;
-                particle.size *= 0.98;
-                
-                if (particle.life > 0) {
-                    this.ctx.save();
-                    this.ctx.translate(particle.x, particle.y);
-                    this.ctx.rotate(particle.angle * Math.PI / 180);
-                    this.ctx.globalAlpha = particle.life;
-                    this.ctx.fillStyle = particle.color;
-                    this.ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
-                    this.ctx.restore();
-                    return true;
-                }
-                return false;
-            });
-            
-            if (this.particles.length > 0) {
-                requestAnimationFrame(animationFrame);
-            }
-        };
-        
-        animationFrame();
-    }
+        return false;
+      });
+      if (this.particles.length > 0) {
+        requestAnimationFrame(animationFrame);
+      }
+    };
+    animationFrame();
+  }
 }
 
-// Initialize confetti
+// Setup confetti
 const confettiCanvas = document.getElementById('confetti-canvas');
 const confetti = new Confetti(confettiCanvas);
 
-onValue(rootRef, (snapshot) => {
-    const data = snapshot.val();
-    console.log(data['overview']);
-    //var overview_value = data['overview'];
-   // const overviewHTML = window.document.getElementById('overview_value')
-   // overviewHTML.textContent = `${overview_value.toLocaleString()}`
-
-   // var active_users = data['active_users'];
-   // const activeHTML = window.document.getElementById('active_user_value')
-   // activeHTML.textContent = active_users;
-     
-   // window.onload = function () {
-      //  document.getElementById('overview')?.remove();
-      //  document.getElementById('active-users')?.remove();
-     // };
-      
-    var today_sale = data['today_sale'];
-    const todayHTML = window.document.getElementById('today_sale')
-    todayHTML.textContent = `₹${today_sale.toLocaleString()}`;
-     
-    const sales = data['sales'];
-    const teamSection = document.getElementById('team-section');
-    const totalRow = document.getElementById('total-row');
-    
-    // Clear existing team member rows but keep total row structure
-    const existingRows = teamSection.querySelectorAll('tr:not(#total-row)');
-    existingRows.forEach(row => row.remove());
-    
-    let totalTarget = 0;
-    let totalAchievement = 0;
-    
-    sales.forEach(sale => {
-        if (sale) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="name-font">${sale.tl.toUpperCase()}</td>
-                <td class="number-font">₹${sale.target.toLocaleString()}</td>
-                <td class="number-font">₹${sale.achievement.toLocaleString()}</td>
-            `;
-            teamSection.insertBefore(row, totalRow);
-            
-            totalTarget += sale.target;
-            totalAchievement += sale.achievement;
-        }
-    });
-    
-    document.getElementById('total-target').textContent = `₹${totalTarget.toLocaleString()}`;
-    document.getElementById('total-achievement').textContent = `₹${totalAchievement.toLocaleString()}`;
-    
-    console.log("🔥 Root Database Data:", data);
+// Enable sound on interaction
+let userHasInteracted = false;
+const enableAudio = () => {
+  if (!userHasInteracted) {
+    userHasInteracted = true;
+    const utterance = new SpeechSynthesisUtterance('');
+    utterance.volume = 0;
+    window.speechSynthesis.speak(utterance);
+  }
+};
+["click", "touchstart", "keydown", "mousemove"].forEach(event =>
+  document.addEventListener(event, enableAudio, { once: true })
+);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) enableAudio();
 });
- 
-// Auto refresh the page every 30 minutes (30 * 60 * 1000 milliseconds)
-// setTimeout(() => {
-//     window.location.reload();
-// }, 30 * 60 * 1000);
 
-function playPaymentSound(){
-    const sound = document.getElementById("payment_sound");
-    sound.play().catch(errror => {
-        console.log("Audio play failed:", errror);
-
-    })
+// Play payment sound
+function playPaymentSound() {
+  const sound = document.getElementById("payment_sound");
+  sound.play().catch(error => {
+    console.warn("Audio play failed:", error);
+  });
 }
 
-document.addEventListener("DOMContentLoaded",function(){
-    document.body.addEventListener("click",function (){
-        playPaymentSound();
-    },{ once:true});
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", playPaymentSound, { once: true });
+});
 
+// Load Firebase data
+const rootRef = ref(db, '/');
+onValue(rootRef, (snapshot) => {
+  const data = snapshot.val();
+  if (!data) return;
+
+  const today_sale = data['today_sale'] || 0;
+  document.getElementById("today_sale").textContent = `₹${today_sale.toLocaleString()}`;
+
+  const sales = data['sales'];
+  const teamSection = document.getElementById("team-section");
+  const totalRow = document.getElementById("total-row");
+  teamSection.innerHTML = ""; // Clear previous rows
+  teamSection.appendChild(totalRow); // Re-add total row
+
+  let totalTarget = 0;
+  let totalAchievement = 0;
+
+  for (let tl in sales) {
+    if (tl.toLowerCase() === "total") continue;
+
+    const teamData = sales[tl];
+  const name = teamData.tl || `Team ${parseInt(tl) + 1}`;
+  const target = teamData.target ||0;
+  const achievement = teamData.achievement ||0;
+  const percentage = target > 0 ? ((achievement / target) * 100).toFixed(2) : "0.00";
+  
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="name-font">${name.toUpperCase()}</td>
+    <td class="number-font">₹${target.toLocaleString()}</td>
+    <td class="number-font">₹${achievement.toLocaleString()}</td>
+    <td class="number-font">${percentage}%</td>
+  `;
+    teamSection.insertBefore(row, totalRow);
+
+    totalTarget += target;
+    totalAchievement += achievement;
+  }
+
+  const totalPercentage = totalTarget > 0 ? ((totalAchievement / totalTarget) * 100).toFixed(2) : "0.00";
+  document.getElementById("total-target").textContent = `₹${totalTarget.toLocaleString()}`;
+  document.getElementById("total-achievement").textContent = `₹${totalAchievement.toLocaleString()}`;
+  document.getElementById("total-percentage").textContent = `${totalPercentage}%`;
+
+  console.log("🔥 Data loaded:", data);
 });

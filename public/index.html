@@ -23,8 +23,7 @@
   <div class="container">
   
       
-    <table>
-      <thead>
+    
         
           <marquee behavior="scroll" direction="right" scrollvalue="hisaab-tv" class="new-linelogo">
             hisaab<span style="color:#f7b510;"> &#8226;</span> 
@@ -163,39 +162,35 @@
 
           </div>
         
-      </thead>
+     
+      <table>
+        <thead>
+          
       <tr class="second-section">
 
         <th class="second-line">TEAM LEADER</th>
         <th class="second-line">TARGET</th>
-        <th class="second-line">ACHIVEMENT</th>
-
+        <th class="second-line">ACHIEVEMENT</th>
+        <th class="second-line">ACHIEVEMENT %</th>
       </tr>
+        </thead>
       <tbody id="team-section">
         <tr id="total-row">
           <td class="number-fontT" id="TOTAL">TOTAL</td>
-          <td class="number-font" id="total-target">-</td>
-          <td class="number-font" id="total-achievement">-</td>
-
+          <td class="number-font" id="total-target"></td>
+          <td class="number-font" id="total-achievement"></td>
+          <td class="number-font" id="total-percentage"></td>
         </tr>
       </tbody>
     </table>
     
          
-        </marquee>
+       
       </div>
 
     </div>
   </div>
-  <script>
-    window.onload = function () {
-      const overview = document.getElementById('overview');
-      const activeUsers = document.getElementById('active-users');
-  
-      if (overview) overview.remove();
-      if (activeUsers) activeUsers.remove();
-    };
-  </script>
+     
   
 </body>
 

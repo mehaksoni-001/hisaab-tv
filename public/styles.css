@@ -33,6 +33,10 @@
     
    width: 100vw;
 }
+.second-section{
+    margin-top:20px;
+
+}
 
 #today_sale {
     font-size: 170px;
@@ -43,15 +47,18 @@
     justify-content: center;
     padding-left: 200px;
 }
+.new-today{
+    padding-top: 20px;
+}
 .today{
     padding-top: 5px;
     font-size: 40px;
   height: 200px;
   width: 100vw;
   justify-content: center;
-  
+  margin-top: -15px;
   align-items: center;
-  margin-bottom: 80px;
+  margin-bottom: 70px;
  
 }
 
@@ -259,9 +266,9 @@ td {
     font-size: 30px;
 }
 
-/* Full screen amount display */
+
 .fullscreen-amount {
-   /* position: fixed;*/
+    
     top: 0;
     left: 0;
     width: 100%;
